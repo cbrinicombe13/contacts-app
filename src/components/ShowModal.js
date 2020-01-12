@@ -18,7 +18,6 @@ export class ShowModal extends Component {
     toggleShow = () => {
         this.setState({
             show: !this.state.show,
-            contactState: this.state.contactState
         });
     }
 

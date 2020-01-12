@@ -2,7 +2,7 @@
 import React, { Component } from 'react'
 import { BrowserRouter as Router, Route } from 'react-router-dom'
 
-// Style sheets:
+// Stylesheets:
 import 'bootstrap/dist/css/bootstrap.css'
 import './App.css'
 import Container from 'react-bootstrap/Container'
@@ -17,89 +17,75 @@ import Book from './components/Book'
 
 // Utilities:
 import uuid from 'uuid'
+import Connection from '../src/api/Connection'
 
 class App extends Component {
-  // Dummy state:
-  state = {
-    searchField: "",
-    contacts: [
-      {
-        id: uuid.v4(),
-        first_name: "Charlie",
-        last_name: "Brinicombe",
-        age: "21",
-        phone: "07791388537",
-        email: "cbrinicombe13@googlemail.com",
-        occupation: "Student",
-        created_at: "01-06-2007, 14:09:58"
-      },
-      {
-        id: uuid.v4(),
-        first_name: "Jackie",
-        last_name: "Brinicombe",
-        age: "55",
-        phone: "07789195080",
-        email: "jpbrinicombe@me.com",
-        occupation: "Marketing Director",
-        created_at: "10-04-2004, 18:42:24"
-      },
-      {
-        id: uuid.v4(),
-        first_name: "Sean",
-        last_name: "Brinicombe",
-        age: "55",
-        phone: "07721474017",
-        email: "sean.brinicombe@lond-amb.nhs.uk",
-        occupation: "Stakeholder Engagement Manager",
-        created_at: "05-09-20012, 05:45:00"
-      },
-      {
-        id: uuid.v4(),
-        first_name: "Helen",
-        last_name: "Hopkins",
-        age: "23",
-        phone: "07810453590",
-        email: "hhopkins26@hotmail.com",
-        occupation: "Sharedealing Assistant",
-        created_at: "25-12-2020, 00:00:00"
-      }
-    ]
+
+  constructor(props) {
+    super(props);
+    this.conn = new Connection();
+    this.state = {
+      searchField: "",
+      contacts: []
+    }
   }
 
-  search = (searchField) => {
-    this.setState({
-      searchField: searchField,
-      contacts: this.state.contacts
+  // Set state with contacts from API:
+  componentDidMount() {
+    return this.conn.read().then(resp => {
+      this.setState({ contacts: resp.data.data });
+      console.log(resp.data.data);
     });
   }
 
-  clearContacts = () => {
-    this.setState({ contacts: [] });
+  // Filter book contents on type:
+  onSearch = (searchField) => {
+    return this.setState({
+      searchField: searchField,
+    });
   }
 
+  // Clear all entries in book:
+  clearContacts = () => {
+    this.setState({ contacts: [] });
+    return this.conn.clear().then(resp => {
+      console.log(resp);
+    });
+  }
+
+// Add new entries to book:
   addContact = (newContact) => {
     newContact.id = uuid.v4();
     this.setState({ contacts: [...this.state.contacts, newContact]});
+    return this.conn.create(newContact).then(resp => {
+      console.log(resp);
+    })
   }
 
+  // Delete entries from book on click:
   delContact = (id) => {
     this.setState({ contacts: [...this.state.contacts.filter(entry => entry.id !== id)]});
+    return this.conn.delete(id).then(resp => {
+      console.log(resp);
+    });
   }
 
+  // Edit single entry from book on click:
   editContact = (editDetails) => {
     let contacts = this.state.contacts;
     for(var i = 0; i < contacts.length; i++) {
       if(editDetails.id === contacts[i].id) {
         contacts[i] = editDetails;
-        this.setState({ contacts: contacts});
-        return;
+        this.setState({ contacts: contacts });
       }
     }
+    return this.conn.update(editDetails).then(resp => {
+      console.log(resp);
+    });
   }
 
-  // Lifecycle method:
+  // Lifecycle method: Need to fix contact created_at not being entered when created on this side.
   render() {
-    console.log(this.state);
     return (
       <Router>
         <div className="App">
@@ -114,12 +100,12 @@ class App extends Component {
               contacts = {this.state.contacts}
               clearContacts = {this.clearContacts}
               addContact = {this.addContact}
-              sendSearch = {this.search}
+              onSearch = {this.onSearch}
               />
               <Book
               contacts = {this.state.contacts.filter(contact => {
-                return contact.last_name.startsWith(this.state.searchField)}
-                )}
+                          return contact.last_name.startsWith(this.state.searchField);
+                        })}
               delContact = {this.delContact}
               editContact = {this.editContact}/>
             </React.Fragment>

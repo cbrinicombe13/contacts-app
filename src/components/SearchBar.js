@@ -10,7 +10,7 @@ export class SearchBar extends Component {
     onChange = (e) => {
         e.preventDefault();
         this.setState({ search: e.target.value });
-        this.props.sendSearch(this.state.search);
+        this.props.onSearch(this.state.search);
     }
 
     render() {
@@ -25,7 +25,7 @@ export class SearchBar extends Component {
 }
 
 SearchBar.propTypes = {
-    sendSearch: PropTypes.func.isRequired
+    onSearch: PropTypes.func.isRequired
 }
 
 export default SearchBar

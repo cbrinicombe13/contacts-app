@@ -6,6 +6,7 @@ import PropTypes from 'prop-types'
 class Book extends Component {
     render() {
         return (
+            <div>
             <Table striped bordered hover variant = 'dark'>
                 <thead>
                     <tr>
@@ -22,6 +23,7 @@ class Book extends Component {
                     ))}
                 </tbody>
             </Table>
+            </div>
         )
     }
 }

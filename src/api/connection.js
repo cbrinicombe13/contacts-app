@@ -1,20 +1,40 @@
-const mysql = require('mysql');
-//const express = require('express');
+import axios from "axios";
 
-const db = mysql.createConnection({
-    host: 'localhost',
-    user: 'root',
-    password: '',
-    database: 'ContactsApp'
-});
+export default class Connection {
+    constructor() {
+        this.root = 'http://192.168.64.2/contacts-app-api/contact';
+    }
 
-db.connect((err) => {
-    if(err) throw err;
-    console.log('Connected...');
-});
+    read = async () => {
+        return await axios.get(this.root + '/read.php');
+    }
 
-// const app = express();
+    readSingle = async (id) => {
+        return await axios.get(this.root + '/read_single.php', {
+            params: {
+                id: id
+            }
+        });
+    }
 
-// app.listen('3000', () => {
-//     console.log('Listening on localhost:3000...');
-// })
+    create = async (contact) => {
+        return await axios.post(this.root + '/create.php', JSON.stringify(contact));
+    }
+
+    delete = async (id) => {
+        return await axios.delete(this.root + '/delete.php', {
+            params: {
+                id: id
+            }
+        });
+    }
+
+    update = async (contact) => {
+        return await axios.put(this.root + '/update.php', JSON.stringify(contact));
+    }
+
+    clear = async () => {
+        return await axios.delete(this.root + '/clear.php');
+    }
+
+}

@@ -16,7 +16,7 @@ export class ControlBar extends Component {
                         <Col>
                             <Row>
                                 <AddModal contacts = {this.props.contacts} addContact = {this.props.addContact}/>
-                                <SearchBar sendSearch = {this.props.sendSearch}/>
+                                <SearchBar onSearch = {this.props.onSearch}/>
                                 <Button onClick = {this.props.clearContacts} style = {{marginLeft: '4px'}}>Clear</Button>
                             </Row> 
                         </Col>
@@ -31,7 +31,8 @@ export class ControlBar extends Component {
 ControlBar.propTypes = {
     contacts: PropTypes.array.isRequired,
     clearContacts: PropTypes.func.isRequired,
-    addContact: PropTypes.func.isRequired
+    addContact: PropTypes.func.isRequired,
+    onSearch: PropTypes.func.isRequired
 }
 
 export default ControlBar

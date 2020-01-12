@@ -12,7 +12,6 @@ function Header() {
                 <Link style = {linkStyle} to='/signup'>Sign Up</Link> {' '} | {' '}
                 <Link style = {linkStyle} to='/about'>About</Link>
             </Container>
-            
         </header>
     )
 }

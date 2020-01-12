@@ -25,16 +25,29 @@ export class AddModal extends Component {
     toggleAdd = () => {
         this.setState({
             show: !this.state.show,
-            newContact: this.state.newContact,
             error: ""
+        });
+    }
+
+    onHide = () => {
+        this.toggleAdd();
+        this.setState({
+            show: false,
+            newContact: {
+                first_name: "",
+                last_name: "",
+                age: "",
+                phone: "",
+                email: "",
+                occupation: ""
+            },
+            error: "" 
         });
     }
 
     onChange = (e) => {
         this.setState({
-            show: this.state.show,
             newContact: { ...this.state.newContact, [e.target.name]: e.target.value },
-            error: this.state.error
         });
     }
 
@@ -45,51 +58,44 @@ export class AddModal extends Component {
         });
    }
 
-    // Check for duplicate phone/email:
-    isUnique = () => {
+    // Check for duplicate phone/email: DOESNT WORK
+    isUnique = (newContact) => {
         let contacts = this.props.contacts;
-        let new_contact = this.state.newContact;
         contacts.every(contact => {
-            return !(contact['email'] === new_contact['email'] || contact['phone'] === new_contact['phone']);
+            return (contact['email'] !== newContact['email'] || contact['phone'] !== newContact['phone']);
         });
     }
 
     onSubmit = () => {
         // First empty the error state:
         this.setState({
-            show: this.state.show,
-            newContact: this.state.newContact,
             error: ""
         });
 
         // Add new contact if is valid and unique, otherwise show respective error:
         if(this.isValidContact(this.state.newContact)) {
-            if(this.isUnique()) {
+            if(true) {
+            // if(this.isUnique(this.state.newContact)) {
                 this.toggleAdd();
                 this.props.addContact(this.state.newContact);
                 this.setState({
                     show: false,
                     newContact: {
-                        first_name: '',
-                        last_name: '',
-                        age: '',
-                        phone: '',
-                        email: '',
-                        occupation: ''
+                        first_name: "",
+                        last_name: "",
+                        age: "",
+                        phone: "",
+                        email: "",
+                        occupation: ""
                     },
-                    error: this.state.error
                 });
             } else {
                 this.setState({
-                    show: this.state.show,
-                    newContact: this.state.newContact,
                     error: "Contact already exists." 
                 });
             }
         } else {
             this.setState({
-                show: this.state.show,
-                newContact: this.state.newContact,
                 error: "All fields must be entered."
             });
         }
@@ -99,7 +105,7 @@ export class AddModal extends Component {
         return (
             <React.Fragment>
             <Button onClick = {this.toggleAdd}>+ Add</Button>
-            <Modal show = {this.state.show} onHide = {this.toggleAdd} className = 'custom_modal'>
+            <Modal show = {this.state.show} onHide = {this.onHide} className = 'custom_modal'>
                 <Modal.Header closeButton>
                     <Modal.Title>New Contact</Modal.Title>
                 </Modal.Header>

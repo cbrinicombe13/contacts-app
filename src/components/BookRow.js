@@ -61,8 +61,6 @@ export class BookRow extends Component {
 
     onChange = (e) => {
         this.setState({
-            modalShow: false,
-            modalEdit: this.state.modalEdit,
             editDetails: { ...this.state.editDetails, [e.target.name]: e.target.value}
         });
     }
