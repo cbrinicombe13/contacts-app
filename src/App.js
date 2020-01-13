@@ -13,6 +13,7 @@ import Footer from './components/layout/Footer'
 import Signup from './components/pages/Signup'
 import About from './components/pages/About'
 import AddressBook from './components/AddressBook'
+import SideBar from './components/SideBar'
 
 class App extends Component {
   render() {
@@ -28,7 +29,7 @@ class App extends Component {
             <Container fluid>
               <Row>
                 <Col md = {3}>
-                  SideBar
+                  <SideBar/>
                 </Col>
                 <Col>
                   <AddressBook/>
