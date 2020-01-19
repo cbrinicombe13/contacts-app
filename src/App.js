@@ -7,6 +7,8 @@ import 'bootstrap/dist/css/bootstrap.css'
 import './App.css'
 import { Container, Row, Col } from 'react-bootstrap'
 
+import Connection from './api/Connection'
+
 // Components:
 import Header from './components/layout/Header'
 import Footer from './components/layout/Footer'
@@ -16,6 +18,25 @@ import AddressBook from './components/AddressBook'
 import SideBar from './components/SideBar'
 
 class App extends Component {
+
+  constructor(props) {
+    super(props);
+    this.conn = new Connection();
+    this.state = {
+      activeBook: 'user0Book0'
+    }
+  }
+
+  setActiveBook = (activeBook) => {
+    this.setState({ activeBook: activeBook });
+  }
+
+  createTable = () => {
+    return this.conn.createTable('textBook').then(resp => {
+      console.log(resp);
+    });
+  }
+
   render() {
     return (
       <Router>
@@ -29,10 +50,10 @@ class App extends Component {
             <Container fluid>
               <Row>
                 <Col md = {3}>
-                  <SideBar/>
+                  <SideBar setActiveBook = {this.setActiveBook} createTable = {this.createTable}/>
                 </Col>
                 <Col>
-                  <AddressBook/>
+                  <AddressBook activeBook = {this.state.activeBook}/>
                 </Col>
               </Row>
             </Container>

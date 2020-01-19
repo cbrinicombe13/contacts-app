@@ -18,9 +18,8 @@ export class ControlBar extends Component {
                                 <AddModal contacts = {this.props.contacts} addContact = {this.props.addContact}/>
                                 <SearchBar onSearch = {this.props.onSearch}/>
                                 <Button onClick = {this.props.clearContacts} style = {{marginLeft: '4px'}}>Clear</Button>
-                            </Row> 
+                            </Row>
                         </Col>
-                        <Col/>
                     </Row>
                 </Container>
             </React.Fragment>

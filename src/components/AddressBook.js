@@ -7,6 +7,8 @@ import Book from './Book'
 import uuid from 'uuid'
 import Connection from '../api/Connection'
 
+import PropTypes from 'prop-types'
+
 export default class AddressBook extends Component {
 
     constructor(props) {
@@ -19,13 +21,14 @@ export default class AddressBook extends Component {
       }
 
     // Set state with contacts from API:
-    componentDidMount() {
-        return this.conn.read().then(resp => {
+    componentWillReceiveProps() {
+        console.log(this.props.activeBook);
+        return this.conn.read(this.props.activeBook).then(resp => {
             this.setState({ contacts: resp.data.data });
                 console.log(resp.data.data);
         });
     }
-
+    
     // Filter book contents on type:
     onSearch = (searchField) => {
         return this.setState({
@@ -91,4 +94,8 @@ export default class AddressBook extends Component {
             </React.Fragment>
         )
     }
+}
+
+AddressBook.propTypes = {
+    activeBook: PropTypes.string.isRequired
 }

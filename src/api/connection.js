@@ -2,15 +2,27 @@ import axios from "axios";
 
 export default class Connection {
     constructor() {
-        this.root = 'http://192.168.64.2/contacts-app-api/contact';
+        this.root = 'http://192.168.64.2/contacts-app-api';
     }
 
-    read = async () => {
-        return await axios.get(this.root + '/read.php');
+    createTable = async (tID) => {
+        return await axios.get(this.root + '/book/init.php', {
+            params: {
+                tID: tID
+            }
+        });
+    }
+
+    read = async (bookID) => {
+        return await axios.get(this.root + '/contact/read.php', {
+            params: {
+                bookID: bookID
+            }
+        });
     }
 
     readSingle = async (id) => {
-        return await axios.get(this.root + '/read_single.php', {
+        return await axios.get(this.root + '/contact/read_single.php', {
             params: {
                 id: id
             }
@@ -18,11 +30,11 @@ export default class Connection {
     }
 
     create = async (contact) => {
-        return await axios.post(this.root + '/create.php', JSON.stringify(contact));
+        return await axios.post(this.root + '/contact/create.php', JSON.stringify(contact));
     }
 
     delete = async (id) => {
-        return await axios.delete(this.root + '/delete.php', {
+        return await axios.delete(this.root + '/contact/delete.php', {
             params: {
                 id: id
             }
@@ -30,11 +42,11 @@ export default class Connection {
     }
 
     update = async (contact) => {
-        return await axios.put(this.root + '/update.php', JSON.stringify(contact));
+        return await axios.put(this.root + '/contact/update.php', JSON.stringify(contact));
     }
 
     clear = async () => {
-        return await axios.delete(this.root + '/clear.php');
+        return await axios.delete(this.root + '/contact/clear.php');
     }
 
 }
