@@ -6,18 +6,30 @@ body {
   display: none;
 }
 
-.list-group-item {
+.no-padding {
+  padding: 0px;
+}
+
+.no-margin {
+  margin: 0px;
+}
+
+div.dropdown-menu.show {
+  background-color: #343a40;
+  border: 1px solid gray;
+}
+
+a.dropdown-item:hover {
   background-color: #343a40;
 }
 
-.list-group-item:hover {
-  background-color: #343a40;
+.dark-border {
+  border: 1px solid #454d55;
 }
 
 div.col-md-3 {
   padding-right: 0px;
   padding-left: 0px;
-  border: 1px solid #454d55;
 }
 
 nav.nav.nav-tabs {
@@ -26,22 +38,27 @@ nav.nav.nav-tabs {
 }
 
 a.nav-item.nav-link.active {
-  color:#007bff !important;
+  color:#007bff;
   background-color: transparent;
+  border: 1px solid #007bff;
+}
+
+a.nav-item.nav-link:hover {
+  border: 1px solid #007bff;
+}
+
+.list-group-item {
+  background-color: #343a40;
   border: 1px solid #454d55;
 }
 
-a.nav-item.nav-link.hover {
-  border: 1px solid #007bff;
+.list-group-item-action:hover {
+  background-color: #343a40;
 }
 
 .container-fluid {
   padding-left: 0px;
   padding-right: 0px;
-}
-
-header {
-  margin-bottom: 3px;
 }
 
 .modal-body {
@@ -58,12 +75,8 @@ header {
 }
 
 .form-control {
-  margin-left: 2px;
-  margin-right: 2px;
   background-color: #2d2d2d;
   border-color: gray;
-  margin-top: 1px;
-  margin-bottom: 1px;
 }
 
 .form-control:focus {

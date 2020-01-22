@@ -4,7 +4,6 @@ import PropTypes from 'prop-types'
 import Button from 'react-bootstrap/Button'
 import Container from 'react-bootstrap/Container'
 import Row from 'react-bootstrap/Row'
-import Col from 'react-bootstrap/Col'
 import SearchBar from './SearchBar'
 
 export class ControlBar extends Component {
@@ -13,13 +12,9 @@ export class ControlBar extends Component {
             <React.Fragment>
                 <Container fluid>
                     <Row>
-                        <Col>
-                            <Row>
-                                <AddModal contacts = {this.props.contacts} addContact = {this.props.addContact}/>
-                                <SearchBar onSearch = {this.props.onSearch}/>
-                                <Button onClick = {this.props.clearContacts} style = {{marginLeft: '4px'}}>Clear</Button>
-                            </Row>
-                        </Col>
+                        <AddModal contacts = {this.props.contacts} addContact = {this.props.addContact}/>
+                        <SearchBar onSearch = {this.props.onSearch}/>
+                        <Button onClick = {this.props.clearContacts}>Clear</Button>
                     </Row>
                 </Container>
             </React.Fragment>

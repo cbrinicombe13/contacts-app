@@ -1,18 +1,44 @@
 import React, { Component } from 'react'
-import { Tabs, Tab, ListGroup, Row, Col, Container, Button } from 'react-bootstrap';
+import { Tabs, Tab, ListGroup, Row, Col, Button, Container, Form } from 'react-bootstrap';
 import PropTypes from 'prop-types'
+
+import Connection from '../api/Connection'
 
 class SideBar extends Component {
 
     constructor(props) {
         super(props);
+        this.updates = 0;
+        this.conn = new Connection();
         this.state = {
             key: 'myBooks',
+            books: [],
+            newBook: ''
         }
     }
 
+    componentDidUpdate() {
+        if(this.updates > 0) {
+            return;
+        }
+        this.updates++;
+        this.conn.readTables().then(resp => {
+            this.setState({ books: resp.data.tables});
+            this.updates = 0;
+        });
+    }
+
+    createTable = () => {
+        this.setState({ books: [...this.state.books, this.state.newBook] });
+        return this.conn.createTable(this.state.newBook);
+    }
+
+    onNewBookFormChange = (e) => {
+        this.setState({ newBook: e.target.value});
+    }
+
     onSelectTab = (tabKey) => {
-        this.setState({ key: tabKey});
+        this.setState({ key: tabKey });
     }
 
     onSelectListItem = (e) => {
@@ -21,19 +47,31 @@ class SideBar extends Component {
 
     render() {
         return (
-            <Container>
-                <Row>
-                    <Col>
-                        
-                    </Col>
-                </Row>
+            <Container className = 'no-padding'>
                 <Tabs defaultActiveKey='myBooks' activeKey = {this.state.key} onSelect = {this.onSelectTab}>
-                    <Tab eventKey = 'myBooks' title = 'My Books'>
-                        <Button onClick = {this.props.createTable}>+ New Book</Button>
+                    <Tab eventKey = 'myBooks' title = {'My Books (' + this.state.books.length + ')'}>
+                        <Container fluid>
+                            <Row>
+                                <Col md = {8} className = 'no-padding'>
+                                    <Form.Control
+                                    type = 'text'
+                                    name = 'newBookName'
+                                    value = {this.state.newBook}
+                                    placeholder = 'New book name...'
+                                    onChange = {this.onNewBookFormChange}
+                                    ></Form.Control>
+                                </Col>
+                                <Col>
+                                    <Button block onClick= {this.createTable}>+ Add Book</Button>
+                                </Col>
+                            </Row>
+                        </Container>
                         <ListGroup variant = 'flush'>
-                            <ListGroup.Item action onClick = {this.onSelectListItem} name = 'user0Book0'>Book 1</ListGroup.Item>
-                            <ListGroup.Item action onClick = {this.onSelectListItem} name = 'user0Book1'>Book 2</ListGroup.Item>
-                            <ListGroup.Item action onClick = {this.onSelectListItem} name = 'user0Book2'>Book 3</ListGroup.Item>
+                            {this.state.books.map(book => {
+                                return (
+                                    <ListGroup.Item action onClick = {this.onSelectListItem} name = {book} key = {book}>{book}</ListGroup.Item>
+                                )
+                            })}
                         </ListGroup>
                     </Tab>
                     <Tab eventKey = 'groups' title = 'Groups'>
@@ -49,8 +87,7 @@ class SideBar extends Component {
 }
 
 SideBar.propTypes = {
-    setActiveBook: PropTypes.func.isRequired,
-    createTable: PropTypes.func.isRequired
+    setActiveBook: PropTypes.func.isRequired
 }
 
 export default SideBar

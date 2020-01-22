@@ -104,7 +104,7 @@ export class AddModal extends Component {
     render() {
         return (
             <React.Fragment>
-            <Button onClick = {this.toggleAdd}>+ Add</Button>
+            <Button onClick = {this.toggleAdd}>+ Add Contact</Button>
             <Modal show = {this.state.show} onHide = {this.onHide} className = 'custom_modal'>
                 <Modal.Header closeButton>
                     <Modal.Title>New Contact</Modal.Title>

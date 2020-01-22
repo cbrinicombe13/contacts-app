@@ -5,6 +5,10 @@ export default class Connection {
         this.root = 'http://192.168.64.2/contacts-app-api';
     }
 
+    readTables = async () => {
+        return await axios.get(this.root + '/meta/read_tables.php');
+    }
+
     createTable = async (tID) => {
         return await axios.get(this.root + '/book/init.php', {
             params: {

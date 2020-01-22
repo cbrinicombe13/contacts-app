@@ -13,6 +13,7 @@ export default class AddressBook extends Component {
 
     constructor(props) {
         super(props);
+        this.updates = 0;
         this.conn = new Connection();
         this.state = {
           searchField: "",
@@ -20,12 +21,15 @@ export default class AddressBook extends Component {
         }
       }
 
-    // Set state with contacts from API:
-    componentWillReceiveProps() {
-        console.log(this.props.activeBook);
+    componentDidUpdate() {
+        if(this.updates > 0) {
+            return;
+        }
+        this.updates++;
+        console.log('Component did update');
         return this.conn.read(this.props.activeBook).then(resp => {
             this.setState({ contacts: resp.data.data });
-                console.log(resp.data.data);
+            this.updates = 0;
         });
     }
     

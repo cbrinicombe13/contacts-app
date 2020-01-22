@@ -31,12 +31,6 @@ class App extends Component {
     this.setState({ activeBook: activeBook });
   }
 
-  createTable = () => {
-    return this.conn.createTable('textBook').then(resp => {
-      console.log(resp);
-    });
-  }
-
   render() {
     return (
       <Router>
@@ -49,10 +43,10 @@ class App extends Component {
           <Route exact path = '/' render = { props => (
             <Container fluid>
               <Row>
-                <Col md = {3}>
+                <Col md = {3} className = 'dark-border'>
                   <SideBar setActiveBook = {this.setActiveBook} createTable = {this.createTable}/>
                 </Col>
-                <Col>
+                <Col className = 'dark-border'>
                   <AddressBook activeBook = {this.state.activeBook}/>
                 </Col>
               </Row>
